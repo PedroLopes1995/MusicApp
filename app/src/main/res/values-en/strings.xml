@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Music App 2016</string>
+    <string name="Showing_all">Showing all songs</string>
+    <string name="Album">Album</string>
+    <string name="All">All</string>
+    <string name="Artist">Artist</string>
+    <string name="Cancel_button">Cancel</string>
+    <string name="Cancel_text">Canceled</string>
+    <string name="Enter_new_text">Enter your music</string>
+    <string name="New_added">New music added</string>
+    <string name="New_song_text">New song</string>
+    <string name="No_songs_found">No research found. Showing all songs</string>
+    <string name="Rating">Rating</string>
+    <string name="Searched_songs">Showing searched songs</string>
+    <string name="Song">Song</string>
+    <string name="Year">Year</string>
+    <string name="name_Album">Album</string>
+    <string name="name_Artist">Artist</string>
+    <string name="name_Song">Song</string>
+    <string name="name_Year">Year</string>
+    <string name="Add">Add</string>
+    <string name="Search_Music">Search Music</string>
+
+    <string-array name="spinner_search">
+        <item>All</item>
+        <item>Artist</item>
+        <item>Song</item>
+        <item>Album</item>
+        <item>Year</item>
+        <item>Rating</item>
+    </string-array>
+    <string name="Search2">Search</string>
+
+</resources>

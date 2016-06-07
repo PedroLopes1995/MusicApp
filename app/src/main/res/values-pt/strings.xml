@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">A Minha App de Musica 2016</string>
+    <string name="Showing_all">A mostrar todas as musicas</string>
+    <string name="Year">Ano</string>
+    <string name="Song">Musica</string>
+    <string name="Searched_songs">A mostrar as musicas procuradas</string>
+    <string name="Rating">Avaliação</string>
+    <string name="No_songs_found">Nenhuma pesquisa encontrada. A mostrar todas as musicas</string>
+    <string name="New_song_text">Nova musica</string>
+    <string name="New_added">Nova musica adicionada</string>
+    <string name="Enter_new_text">Introduza a sua musica</string>
+    <string name="Cancel_text">Cancelado</string>
+    <string name="Cancel_button">Cancelar</string>
+    <string name="Artist">Artista</string>
+    <string name="All">Tudo</string>
+    <string name="Album">Album</string>
+    <string name="name_Album">Album</string>
+    <string name="name_Artist">Artista</string>
+    <string name="name_Song">Musica</string>
+    <string name="name_Year">Ano</string>
+    <string name="Add">Adicionar</string>
+    <string name="Search_Music">Procurar Musica</string>
+
+    <string-array name="spinner_search">
+        <item>Tudo</item>
+        <item>Artista</item>
+        <item>Musica</item>
+        <item>Album</item>
+        <item>Ano</item>
+        <item>Avaliação</item>
+    </string-array>
+    <string name="Search2">Procurar</string>
+</resources>
