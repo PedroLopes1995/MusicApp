@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         musics = new ArrayList<String>();
 
-        musics.add("Simon Viklund | The Mark | PAYDAY 2 Official Soundtrack | 2013 | 3★");
+        musics.add("Simonen Viklund | The Mark | PAYDAY 2 Official Soundtrack | 2013 | 3★");
         musics.add("ACDC | Thunderstruck | The Razors Edge | 1990 | 5★");
         musics.add("Darude | Sandstorm | Before the Storm |2000 | 2★");
         musics.add("Shinedown | Oblivion | Threat to Survival | 2015 | 4★");
