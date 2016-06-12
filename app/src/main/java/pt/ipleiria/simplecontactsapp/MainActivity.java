@@ -34,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("appMusics", 0);
 
         //Se nao encontrar a key, vai criar um conjunto vazio
-        Set<String> contactsSet = sp.getStringSet("musicsKey", new HashSet<String>());
+        Set<String> musicsSet = sp.getStringSet("musicsKey", new HashSet<String>());
 
 
-        musics = new ArrayList<String>(contactsSet);
+        musics = new ArrayList<String>(musicsSet);
 
 
 
@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
         // NEW
         //
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
 
                 //codigo que é executado quando se clica
@@ -95,39 +95,33 @@ public class MainActivity extends AppCompatActivity {
 
                 ListView listView = (ListView) findViewById(R.id.listView_musics);
                 listView.setAdapter(adapter);
-            }
-        });
-
-        //Long click
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Fez long click no item" + position, Toast.LENGTH_SHORT).show();
-
                 return false;
             }
         });
+
     }
 
 
     //listview_item
-    private SimpleAdapter createSimpleAdapter(ArrayList<String> contacts) {
+    private SimpleAdapter createSimpleAdapter(ArrayList<String> musics) {
         List<HashMap<String, String>> simpleAdapterData = new ArrayList<HashMap<String, String>>();
 
-        for (String c : contacts) {
+        for (String m : musics) {
             HashMap<String, String> hashMap = new HashMap<>();
 
-            String[] split = c.split(" \\| ");
+            String[] split = m.split(" \\| ");
 
-            hashMap.put("name", split[0]);
-            hashMap.put("phone", split[1]);
+            hashMap.put("artist", split[0]);
+            hashMap.put("song", split[1]);
+            hashMap.put("album", split[2]);
+            hashMap.put("year", split[3]);
+            hashMap.put("rating", split[4]);
 
             simpleAdapterData.add(hashMap);
         }
 
-        String[] from = {"name", "phone"};
-        int[] to = {R.id.textView_name, R.id.textView_phone};
+        String[] from = {"artist", "song", "album", "year", "rating"};
+        int[] to = {R.id.textView_artist, R.id.textView_song, R.id.textView_album, R.id.textView_year, R.id.textView_rating};
         SimpleAdapter simpleAdapter = new SimpleAdapter(getBaseContext(), simpleAdapterData, R.layout.listview_item, from, to);
         return simpleAdapter;
     }
@@ -174,8 +168,7 @@ public class MainActivity extends AppCompatActivity {
         String selectedItem = (String) sp.getSelectedItem();
 
         if(termo.equals("")){
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, musics);
+            SimpleAdapter adapter = createSimpleAdapter(musics);
             lv.setAdapter(adapter);
 
             Toast.makeText(MainActivity.this, R.string.Showing_all, Toast.LENGTH_SHORT).show();
@@ -243,16 +236,14 @@ public class MainActivity extends AppCompatActivity {
 
         boolean vazia = searchedMusics.isEmpty();
 
-        if (!vazia) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, searchedMusics);
-        lv.setAdapter(adapter);
+        if (!vazia == false) {
+            SimpleAdapter adapter = createSimpleAdapter(musics);
+            lv.setAdapter(adapter);
 
         Toast.makeText(MainActivity.this, R.string.Searched_songs, Toast.LENGTH_SHORT).show();
         }
         else {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, musics);
+            SimpleAdapter adapter = createSimpleAdapter(musics);
             lv.setAdapter(adapter);
 
             Toast.makeText(MainActivity.this, R.string.No_songs_found, Toast.LENGTH_SHORT).show();
@@ -294,14 +285,15 @@ public class MainActivity extends AppCompatActivity {
                 if(rating.endsWith(".0")) rating = rating.replace(".0" , "");
 
 
-                String newContact = artist + " | " + song + " | " + album + " | " + year + " | " + rating + "★";
+                String newMusic = artist + " | " + song + " | " + album + " | " + year + " | " + rating + "★";
 
-                musics.add(newContact);
+                musics.add(newMusic);
 
-                ListView lv =(ListView) findViewById(R.id.listView_musics);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
-                        android.R.layout.simple_list_item_1, musics);
-                lv.setAdapter(adapter);
+                SimpleAdapter adapter = createSimpleAdapter(musics);
+                ListView listView = (ListView) findViewById(R.id.listView_musics);
+                listView.setAdapter(adapter);
+
+                Toast.makeText(MainActivity.this, "Novo contacto adicionado.", Toast.LENGTH_SHORT).show();
             }
         });
 
