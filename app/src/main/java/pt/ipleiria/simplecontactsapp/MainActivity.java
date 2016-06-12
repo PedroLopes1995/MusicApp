@@ -2,17 +2,24 @@ package pt.ipleiria.simplecontactsapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,16 +31,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        musics = new ArrayList<String>();
+        SharedPreferences sp = getSharedPreferences("appMusics", 0);
 
-        musics.add("Simon Viklund | The Mark | PAYDAY 2 Official Soundtrack | 2013 | 3★");
-        musics.add("ACDC | Thunderstruck | The Razors Edge | 1990 | 5★");
-        musics.add("Darude | Sandstorm | Before the Storm |2000 | 2★");
-        musics.add("Shinedown | Oblivion | Threat to Survival | 2015 | 4★");
-        musics.add("Linkin Park | Numb | Meteora | 2003 | 1★");
+        //Se nao encontrar a key, vai criar um conjunto vazio
+        Set<String> contactsSet = sp.getStringSet("musicsKey", new HashSet<String>());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, musics);
+
+        musics = new ArrayList<String>(contactsSet);
+
+
+
+
+
+
+//         musics = new ArrayList<String>();
+//
+//         musics.add("Simon Viklund | The Mark | PAYDAY 2 Official Soundtrack | 2013 | 3★");
+//         musics.add("ACDC | Thunderstruck | The Razors Edge | 1990 | 5★");
+//         musics.add("Darude | Sandstorm | Before the Storm |2000 | 2★");
+//         musics.add("Shinedown | Oblivion | Threat to Survival | 2015 | 4★");
+//         musics.add("Linkin Park | Numb | Meteora | 2003 | 1★");
+
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        //        android.R.layout.simple_list_item_1, musics);
+
+        SimpleAdapter adapter = createSimpleAdapter(musics);
 
         ListView listView = (ListView) findViewById(R.id.listView_musics);
         listView.setAdapter(adapter);
@@ -45,7 +67,100 @@ public class MainActivity extends AppCompatActivity {
 
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter2);
+
+
+        //
+        // NEW
+        //
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                //codigo que é executado quando se clica
+                //num item da listView
+                Toast.makeText(MainActivity.this, "Clicou no item" + position, Toast.LENGTH_SHORT).show();
+
+
+                //Apaga
+                musics.remove(position);
+
+
+                //Refresh
+                //ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
+                //        android.R.layout.simple_list_item_1, oontactos);
+
+                SimpleAdapter adapter = createSimpleAdapter(musics);
+
+                ListView listView = (ListView) findViewById(R.id.listView_musics);
+                listView.setAdapter(adapter);
+            }
+        });
+
+        //Long click
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, "Fez long click no item" + position, Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        });
     }
+
+
+    //listview_item
+    private SimpleAdapter createSimpleAdapter(ArrayList<String> contacts) {
+        List<HashMap<String, String>> simpleAdapterData = new ArrayList<HashMap<String, String>>();
+
+        for (String c : contacts) {
+            HashMap<String, String> hashMap = new HashMap<>();
+
+            String[] split = c.split(" \\| ");
+
+            hashMap.put("name", split[0]);
+            hashMap.put("phone", split[1]);
+
+            simpleAdapterData.add(hashMap);
+        }
+
+        String[] from = {"name", "phone"};
+        int[] to = {R.id.textView_name, R.id.textView_phone};
+        SimpleAdapter simpleAdapter = new SimpleAdapter(getBaseContext(), simpleAdapterData, R.layout.listview_item, from, to);
+        return simpleAdapter;
+    }
+
+
+    //OnStop. Antes da app ser destroida
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Toast.makeText(MainActivity.this, "A guardar musicas", Toast.LENGTH_SHORT).show();
+
+        // -------------------------------------------------------- mode pode ser 0, aka Mode_private
+        SharedPreferences sp = getSharedPreferences("appMusics", MODE_PRIVATE);
+
+        //sp.edit     alt+enter     primeira opcao
+        SharedPreferences.Editor edit = sp.edit();
+
+        //criar conjunto dos contactos
+        HashSet musicsSet = new HashSet(musics);
+
+        edit.putStringSet("musicsKey", musicsSet);
+
+        edit.commit();
+
+    }
+
+
+    //
+    // END NEW
+    //
+
+
 
     public void onClick_search(View view) {
         EditText et = (EditText) findViewById(R.id.editText_search);
